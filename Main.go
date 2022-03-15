@@ -2,7 +2,6 @@ package main
 
 import (
 	"errors"
-	"fmt"
 	"github.com/atotto/clipboard"
 	"strings"
 )
@@ -30,11 +29,10 @@ func splitting(msg string) ([][]string, error) {
 }
 func validation(splitMsg [][]string) error {
 	var columnCount int = -1
-	for i, cols := range splitMsg {
+	for _, cols := range splitMsg {
 		if columnCount == -1 {
 			columnCount = len(cols)
 		} else if columnCount != len(cols) {
-			fmt.Printf("Column count not match: %d", i)
 			return ColumnCountNotMatch
 		} else {
 			continue

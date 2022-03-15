@@ -11,7 +11,7 @@ func TestValidation(t *testing.T){
 
 	x = [][]string{{"sad", "xxx"}, {"ssssss", "s",""}, {"ddd", "sd"}}
 	err = validation(x)
-	if err != nil {
+	if err == nil {
 		t.Error("expect result")
 	} else {
 		if err != ColumnCountNotMatch {
