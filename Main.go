@@ -10,7 +10,7 @@ import (
 var MsgIsEmpty = errors.New("clipboard msg is empty")
 var ColumnCountNotMatch = errors.New("column count not match")
 
-func spliting(msg string) ([][]string, error) {
+func splitting(msg string) ([][]string, error) {
 	var level2SplitMsg [][]string
 	if len(strings.Trim(msg, " ")) == 0 {
 		return level2SplitMsg, MsgIsEmpty
@@ -43,8 +43,13 @@ func validation(splitMsg [][]string) error {
 	return nil
 }
 
-func getColumnWidth(splitMsg [][]string) []int {
+func getColumnWidth(splitMsg [][]string) ([]int, error) {
 	var arr []int
+
+	err := validation(splitMsg)
+	if err != nil {
+		return arr, err
+	}
 	for _, _ = range splitMsg[0] {
 		arr = append(arr, 0)
 	}
@@ -57,7 +62,7 @@ func getColumnWidth(splitMsg [][]string) []int {
 		}
 	}
 
-	return arr
+	return arr, nil
 
 }
 
@@ -104,7 +109,7 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
-	splitMsg, err := spliting(msg)
+	splitMsg, err := splitting(msg)
 	if err != nil {
 		panic(err)
 	}
@@ -112,7 +117,10 @@ func main() {
 		panic(err)
 	}
 
-	columnWidth := getColumnWidth(splitMsg)
+	columnWidth, err := getColumnWidth(splitMsg)
+	if err != nil {
+		panic(err)
+	}
 
 	var finalStr = ""
 
